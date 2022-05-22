@@ -34,6 +34,12 @@ let isValidRequestBody = function (body) {
     return true;
 }
 
+let isUrlValid = function (longUrl) {
+    let urlRegex = (/^(ftp|http|https):\/\/[^ "]+$/)
+    return urlRegex.test(longUrl)
+}
+
+
 
 const createUrl = async (req, res) => {
     try {
@@ -44,9 +50,14 @@ const createUrl = async (req, res) => {
 
         const { longUrl } = body;
 
-        if (!validUrl.isUri(longUrl)) {
+        // if (!validUrl.isUri(longUrl)) {
+        //     return res.status(400).send({status: false, message: "Enter a valid url"})
+        // }
+        
+        if (!isUrlValid(longUrl)) {
             return res.status(400).send({status: false, message: "Enter a valid url"})
         }
+
 
         const urlCode = shortid.generate().toLowerCase()
         const shortUrl = 'http://localhost:3000/' + urlCode
